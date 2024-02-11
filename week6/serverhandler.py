@@ -55,18 +55,15 @@ class OpenstackHandler:
     def deleteServer(self,  ip):
             try:
                 deleted = False
-                floatingip = ""
-                print(ip)
                 for server in self.conn.compute.servers():
                     if 'wordpress' in server.tags:
                             if server.addresses:
                                 for network_name, addresses in server.addresses.items():
                                     for address in addresses:
                                         if address['OS-EXT-IPS:type'] == 'floating':
-                                            print(address['addr'])
                                             if str(ip) == str(address['addr']):
-                                                ip = self.conn.network.find_ip(floatingip)
-                                                self.conn.network.delete_ip(ip)
+                                                deleteip = self.conn.network.find_ip(ip)
+                                                self.conn.network.delete_ip(deleteip)
                                                 self.conn.delete_server(server)
                                                 deleted = True
                                                 return {}
@@ -74,10 +71,3 @@ class OpenstackHandler:
                     return (f'could not find server')
             except Exception as e:
                 return (f'failed to delete server: {e}')
-
-    def getTaggedServers(self):
-        servers = []
-        for server in self.conn.compute.servers():
-                if 'wordpress' in server.tags:
-                        servers.append(server)
-        return servers

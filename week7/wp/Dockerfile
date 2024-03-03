@@ -18,8 +18,6 @@ RUN apt-get install php-mysql mysql-server mysql-client -y
 COPY init.sql /init.sql
 COPY --chown=www-data:www-data wp-config.php /var/www/html/wp-config.php
 
-EXPOSE 3306
-EXPOSE 80
 COPY --chown=root:root start.bash .
 RUN chmod +x start.bash
 CMD "./start.bash"

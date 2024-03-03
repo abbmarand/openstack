@@ -5,7 +5,7 @@ RUN apt-get update
 RUN apt-get upgrade -y 
 RUN apt-get install nginx php-fpm wget -y
 
-#install wordpress, move into the right folder and change config
+
 RUN wget -O latest.tar.gz https://wordpress.org/latest.tar.gz
 RUN tar -xf latest.tar.gz
 RUN rm -rf latest.tar.gz

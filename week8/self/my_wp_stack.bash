@@ -32,10 +32,12 @@ if [ "$command" == "deploy" ]; then
             --name $wordpress_container_name \
             --network $arg1 \
             -p $arg2:80 \
-            -e WORDPRESS_DB_HOST=$db_ip \
+            -e WORDPRESS_DB_HOST=$db_container_name \
+            -e WORDPRESS_DB_NAME=wp \
             -e WORDPRESS_DB_USER=wp \
             -e WORDPRESS_DB_PASSWORD=secret \
-            wordpress
+            -v $db_volume_name:/var/lib/wordpress \
+            wordpress:latest
             
         else
             echo "No port provided"
@@ -54,7 +56,7 @@ elif [ "$command" == "destroy" ]; then
         docker stop $wordpress_container_name $db_container_name
         docker rm $wordpress_container_name $db_container_name
         docker network rm $arg1
-        docker volume rm $db_volume_name
+        #docker volume rm $db_volume_name
     else
         echo "No name provided for destroy"
     fi
